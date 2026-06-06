@@ -124,6 +124,7 @@
   .platform-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
   .platform-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.8rem; border: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.05em; text-decoration: none; transition: border-color 0.2s, color 0.2s, background 0.2s; background: var(--surface); }
   .platform-btn:hover { border-color: var(--gold); color: var(--text); background: var(--gold-muted); }
+  .platform-btn.instagram:hover { border-color: #E1306C; color: #E1306C; background: rgba(225,48,108,0.07); }
   .platform-icon { font-size: 1.1rem; }
 
   /* ONE PAGER BAND */
@@ -144,12 +145,6 @@
   .nl-text h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
   .nl-text h3 em { font-style: italic; color: var(--gold); }
   .nl-text p { color: var(--muted); font-size: 0.9rem; }
-  .nl-form { display: flex; gap: 0; min-width: 400px; }
-  .nl-input { flex: 1; padding: 0.9rem 1.2rem; background: var(--bg); border: 1px solid var(--border); border-right: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; }
-  .nl-input::placeholder { color: var(--muted); }
-  .nl-input:focus { border-color: var(--gold); }
-  .nl-btn { padding: 0.9rem 1.8rem; background: var(--gold); border: 1px solid var(--gold); color: #080808; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-  .nl-btn:hover { background: #d4941f; }
 
   /* FOOTER */
   footer { padding: 3rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
@@ -159,6 +154,7 @@
   .footer-links { display: flex; gap: 2rem; }
   .footer-links a { font-size: 0.78rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
   .footer-links a:hover { color: var(--text); }
+  .footer-links a.instagram:hover { color: #E1306C; }
 
   /* ANIMATIONS */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
@@ -184,8 +180,6 @@
     .hero-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
     .hero-meta { text-align: left; }
     .hero-cities { justify-content: flex-start; }
-    .newsletter-inner { flex-direction: column; align-items: flex-start; }
-    .nl-form { min-width: unset; width: 100%; }
     footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
     .one-pager-band { padding: 3rem 1.5rem; }
     .one-pager-inner { flex-direction: column; align-items: flex-start; }
@@ -378,20 +372,24 @@
     <h2 class="listen-title">Find us<br>wherever you <em>listen.</em></h2>
     <p class="listen-sub">Subscribe and never miss an episode. New conversations drop regularly.</p>
     <div class="platform-grid">
-      <a href="https://open.spotify.com/show/033fKBJ9K5sgBzn503eXss?si=948d520d8e804724" class="platform-btn">
+      <a href="https://open.spotify.com/show/033fKBJ9K5sgBzn503eXss?si=948d520d8e804724" class="platform-btn" target="_blank">
         <span class="platform-icon">&#127925;</span> Spotify
       </a>
-      <a href="https://podcasts.apple.com/us/podcast/the-pitch-room/id1896610932" class="platform-btn">
+      <a href="https://podcasts.apple.com/us/podcast/the-pitch-room/id1896610932" class="platform-btn" target="_blank">
         <span class="platform-icon">&#127897;</span> Apple Podcasts
       </a>
-      <a href="https://www.youtube.com/playlist?list=PLVY8n7GPskffmNUyiW1m6T-gFXwTZjJXX" class="platform-btn">
+      <a href="https://www.youtube.com/playlist?list=PLVY8n7GPskffmNUyiW1m6T-gFXwTZjJXX" class="platform-btn" target="_blank">
         <span class="platform-icon">&#9654;</span> YouTube
       </a>
-      <a href="https://iheart.com/podcast/333513609/" class="platform-btn">
+      <a href="https://iheart.com/podcast/333513609/" class="platform-btn" target="_blank">
         <span class="platform-icon">&#9729;</span> iHeart Radio
       </a>
-      <a href="https://anchor.fm/s/1128af2c4/podcast/rss" class="platform-btn">
+      <a href="https://anchor.fm/s/1128af2c4/podcast/rss" class="platform-btn" target="_blank">
         <span class="platform-icon">&#9677;</span> RSS Feed
+      </a>
+      <a href="https://instagram.com/pitchroompodcast" class="platform-btn instagram" target="_blank">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @pitchroompodcast
       </a>
     </div>
   </div>
@@ -432,8 +430,8 @@
   <a href="#" class="footer-logo">The <span>Pitch</span> Room</a>
   <p class="footer-copy">&#169; 2026 The Pitch Room. All rights reserved.</p>
   <div class="footer-links">
-    <a href="https://instagram.com/max_bratter_usn">Instagram</a>
-    <a href="https://www.linkedin.com/in/max-bratter/">LinkedIn</a>
+    <a href="https://instagram.com/pitchroompodcast" class="instagram" target="_blank">Instagram</a>
+    <a href="https://www.linkedin.com/in/max-bratter/" target="_blank">LinkedIn</a>
     <a href="mailto:pitchroom@maxbratter.com">Contact</a>
   </div>
 </footer>
