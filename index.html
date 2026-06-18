@@ -164,6 +164,32 @@
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
+  /* ================= COUNTDOWN BAR ================= */
+  .cd-bar {
+    display: none; /* JS turns this on when COUNTDOWN.show = true */
+    position: fixed; top: 0; left: 0; right: 0; z-index: 101;
+    align-items: center; justify-content: center;
+    gap: 0.85rem; flex-wrap: wrap;
+    padding: 0.6rem 1.5rem; min-height: 42px;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,164,53,0.28);
+    text-align: center;
+  }
+  .cd-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: cdPulse 2s infinite; flex-shrink: 0; }
+  .cd-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .cd-timer { display: inline-flex; align-items: baseline; gap: 0.7rem; }
+  .cd-seg { display: inline-flex; align-items: baseline; gap: 0.25rem; }
+  .cd-n { font-size: 0.95rem; font-weight: 500; color: var(--text); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+  .cd-u { font-size: 0.58rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+  @keyframes cdPulse { 0% { box-shadow: 0 0 0 0 rgba(232,164,53,0.55); } 70% { box-shadow: 0 0 0 7px rgba(232,164,53,0); } 100% { box-shadow: 0 0 0 0 rgba(232,164,53,0); } }
+  @media (max-width: 600px) {
+    .cd-bar { gap: 0.5rem; padding: 0.55rem 1rem; }
+    .cd-label { font-size: 0.62rem; letter-spacing: 0.14em; }
+    .cd-timer { gap: 0.5rem; }
+    .cd-n { font-size: 0.85rem; }
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
@@ -188,6 +214,13 @@
 </style>
 </head>
 <body>
+
+<!-- ================= COUNTDOWN BAR ================= -->
+<div class="cd-bar" id="cdBar" role="region" aria-label="Countdown">
+  <span class="cd-dot"></span>
+  <span class="cd-label" id="cdLabel"></span>
+  <span class="cd-timer" id="cdTimer" aria-hidden="true"></span>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -437,6 +470,65 @@
 </footer>
 
 <script>
+  // ===========================================================
+  //  COUNTDOWN BAR  ::  the only block you ever need to edit
+  // ===========================================================
+  const COUNTDOWN = {
+    show:    true,                          // false = hide the bar completely
+    label:   "Episode 1 Dropping",   // text before the timer
+    target:  "2026-06-22T09:00:00-04:00",   // when it counts down to (Eastern: -04:00 EDT / -05:00 EST)
+    expired: "Episode 1 is live. Check it out with the links below."          // shown once the target passes
+  };
+  // ===========================================================
+
+  (function initCountdown() {
+    const bar = document.getElementById('cdBar');
+    if (!bar || !COUNTDOWN.show) return;     // hidden: nav stays at the very top
+
+    const nav     = document.querySelector('nav');
+    const labelEl = document.getElementById('cdLabel');
+    const timerEl = document.getElementById('cdTimer');
+    const targetMs = new Date(COUNTDOWN.target).getTime();
+
+    labelEl.textContent = COUNTDOWN.label;
+    bar.style.display = 'flex';
+
+    // push the nav down by however tall the bar actually is (handles wrapping on mobile)
+    const offsetNav = () => { if (nav) nav.style.top = bar.offsetHeight + 'px'; };
+    offsetNav();
+    window.addEventListener('resize', offsetNav);
+
+    if (isNaN(targetMs)) { timerEl.textContent = '(check the target date format)'; return; }
+
+    const pad = (n) => String(n).padStart(2, '0');
+    let timer = null;
+
+    const render = () => {
+      const diff = targetMs - Date.now();
+      if (diff <= 0) {
+        timerEl.innerHTML = '<span class="cd-seg"><span class="cd-n">' + COUNTDOWN.expired + '</span></span>';
+        if (timer) clearInterval(timer);
+        offsetNav();
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      timerEl.innerHTML =
+        '<span class="cd-seg"><span class="cd-n">' + pad(d) + '</span><span class="cd-u">days</span></span>' +
+        '<span class="cd-seg"><span class="cd-n">' + pad(h) + '</span><span class="cd-u">hrs</span></span>' +
+        '<span class="cd-seg"><span class="cd-n">' + pad(m) + '</span><span class="cd-u">min</span></span>' +
+        '<span class="cd-seg"><span class="cd-n">' + pad(s) + '</span><span class="cd-u">sec</span></span>';
+    };
+
+    render();
+    if (targetMs > Date.now()) timer = setInterval(render, 1000);
+  })();
+
+  // ===========================================================
+  //  SCROLL REVEAL
+  // ===========================================================
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
